@@ -3,7 +3,7 @@ class World:
     xsize = 0
     ysize = 0
 
-class ClassName(object):
+class World(object):
     """docstring for ClassName"""
     def __init__(self, arg):
         super(ClassName, self).__init__()
