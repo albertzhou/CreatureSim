@@ -23,10 +23,6 @@ class World:
         self.xgridsize = x
         self.ygridsize = y
 
-    def makeworld(self, x, y):
-        world = World(x, y)
-        return world
-
     def initializeworld(self):
         screen = pygame.display.set_mode((self.xPixels, self.yPixels))
         self.screen = screen
@@ -44,7 +40,7 @@ class World:
 
     def updateWorld(self):
         for c in self.creatureList:
-            if c.checkCollisions(self):
+            if c.ccBot(self): # true if collision on bottom of player
                 c.yPos += 1 # effect of gravity in pixels per loop
             pygame.draw.rect(self.screen, (128, 128, 0), pygame.Rect(c.xPos, c.yPos, c.size, c.size))
         for e in self.environmentList:
