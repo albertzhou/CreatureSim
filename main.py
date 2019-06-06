@@ -20,7 +20,7 @@ class main:
         ## Spawn player, floors, and wall
         gameWorld = World.World(500, 500)
         gameWorld.initializeworld()
-        player = Creature.Creature(Point.Point(250, 400), Point.Point(275, 425), 10)  # xloc, yloc, size
+        player = Creature.Creature(Point.Point(250, 400), Point.Point(275, 425), 5)  # xloc, yloc, size
         gameWorld.spawnCreature(player)
         floor = Wall.Wall(Point.Point(0, gameWorld.yPixels - 30), Point.Point(gameWorld.xPixels, gameWorld.yPixels))
         leftWall = Wall.Wall(Origin, Point.Point(30, gameWorld.yPixels))
@@ -29,17 +29,15 @@ class main:
         gameWorld.spawnWall(leftWall)
         gameWorld.spawnWall(rightWall)
         gameWorld.updateWorld()
+        ## end world initialization
 
         while True: # main game loop
             for event in pygame.event.get():
                 if event.type == pygame.locals.QUIT:
                     pygame.quit()
                     sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    eventKey = event.key
-                    player.handleInput(eventKey, gameWorld)
-                else:
-                    x = 0
+            keys = pygame.key.get_pressed()  # checking pressed keys
+            player.handleInput(keys, gameWorld)
             gameWorld.screen.fill(BLACK)
             gameWorld.updateWorld()  # update all locations
             gameWorld.renderworld()  # redraw the world on screen
