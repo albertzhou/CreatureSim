@@ -64,6 +64,12 @@ class Creature:
         elif keys[pygame.K_a] and (keys[pygame.K_SPACE] or keys[pygame.K_w]):
             self.moveCreatureLeft(world)
             self.CreatureJump(world)
+        elif keys[pygame.K_a] and keys[pygame.K_s]:
+            self.moveCreatureLeft(world)
+            self.CreatureFall(world)
+        elif keys[pygame.K_d] and keys[pygame.K_s]:
+            self.moveCreatureRight(world)
+            self.CreatureFall(world)
         elif keys[pygame.K_d]:
             self.moveCreatureRight(world)
         elif keys[pygame.K_a]:
