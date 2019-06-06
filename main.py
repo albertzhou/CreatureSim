@@ -1,4 +1,4 @@
-import pygame, sys, Wall
+import pygame, sys, Wall, Point
 import World, Creature
 import pygame.locals
 
@@ -12,17 +12,19 @@ class main:
     GREEN = (  0, 255,   0)
     RED =   (255,   0,   0)
 
+    Origin = Point.Point(0, 0)
+
     if __name__ == "__main__":
         pygame.init()
 
-        ## Spawn player and floor
+        ## Spawn player, floors, and wall
         gameWorld = World.World(500, 500)
         gameWorld.initializeworld()
-        player = Creature.Creature(50, 50, 25, 10)  # xloc, yloc, size
+        player = Creature.Creature(Point.Point(250, 400), Point.Point(275, 425), 10)  # xloc, yloc, size
         gameWorld.spawnCreature(player)
-        floor = Wall.Wall(0, gameWorld.yPixels - 30, gameWorld.yPixels, 30)
-        leftWall = Wall.Wall(0, 0, 30, gameWorld.yPixels)
-        rightWall = Wall.Wall(gameWorld.xPixels - 30, 0, 30, gameWorld.yPixels)
+        floor = Wall.Wall(Point.Point(0, gameWorld.yPixels - 30), Point.Point(gameWorld.xPixels, gameWorld.yPixels))
+        leftWall = Wall.Wall(Origin, Point.Point(30, gameWorld.yPixels))
+        rightWall = Wall.Wall(Point.Point(gameWorld.xPixels - 30, 0), Point.Point(gameWorld.yPixels, gameWorld.yPixels))
         gameWorld.spawnWall(floor)
         gameWorld.spawnWall(leftWall)
         gameWorld.spawnWall(rightWall)
@@ -39,6 +41,6 @@ class main:
                 else:
                     x = 0
             gameWorld.screen.fill(BLACK)
-            gameWorld.updateWorld()
-            gameWorld.renderworld()
+            gameWorld.updateWorld()  # update all locations
+            gameWorld.renderworld()  # redraw the world on screen
 

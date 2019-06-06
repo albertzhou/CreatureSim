@@ -1,56 +1,52 @@
-import pygame
+import pygame, Point
 
 
 class Creature:
-    xPos = None
-    yPos = None
-    size = None
+    gravity = 1
+
     speed = None #pixels per second
+    top_left = None
+    bot_right = None
+    x_size = None
+    y_size = None
 
-    leftCoord = None
-    rightCoord = None
-    topCoord = None
-    botCoord = None
-
-    def __init__(self, xPos, yPos, size, speed):
-        self.xPos = xPos
-        self.yPos = yPos
-        self.size = size
+    def __init__(self, top_left, bot_right, speed):
+        self.top_left = top_left
+        self.bot_right = bot_right
         self.speed = speed
 
-        self.leftCoord = self.xPos
-        self.rightCoord = self.xPos + self.size
-        self.topCoord = self.yPos
-        self.botCoord = self.yPos + self.size
+        self.x_size = bot_right.xCoord - top_left.xCoord
+        self.y_size = bot_right.yCoord - top_left.yCoord
 
     def moveCreatureRight(self, world):
-        if self.ccRight(world):
-            self.xPos = self.xPos + self.speed
+        new_topleft = Point.Point(self.top_left.xCoord + self.speed, self.top_left.yCoord)
+        new_botright = Point.Point(self.bot_right.xCoord + self.speed, self.bot_right.yCoord)
+
+        if self.__checkMoveValidity(new_topleft, new_botright, world):
+            self.top_left = new_topleft
+            self.bot_right = new_botright
+            print("move right")
+        print("could not move right")
 
     def moveCreatureLeft(self, world):
-        if self.ccLeft(world):
-            self.xPos = self.xPos - self.speed
+        new_topleft = 0
+        new_botright = 0
+        if self.__checkMoveValidity(new_topleft, new_botright, world):
+            self.top_left = new_topleft
+            self.bot_right = new_botright
+
+    def applyGravity(self, world):
+        new_topleft = Point.Point(self.top_left.xCoord, self.top_left.yCoord + Creature.gravity)
+        new_botright = Point.Point(self.bot_right.xCoord, self.bot_right.yCoord + Creature.gravity)
+        if self.__checkMoveValidity(new_topleft, new_botright, world):
+            self.top_left = new_topleft
+            self.bot_right = new_botright
+            print("applied gravity")
+        else:
+            print("could not apply gravity")
 
     def CreatureJump(self, world):
         x = 0
-
-    def ccBot(self, world): # check collisions bot -- returns true if there is a collision
-        for e in world.environmentList:
-            if self.yPos + self.size < e.topCoord:
-                return True
-        return False
-
-    def ccRight(self, world):
-        for e in world.environmentList:
-            if self.xPos + self.size < e.leftCoord:
-                return True
-        return False
-
-    def ccLeft(self, world):
-        for e in world.environmentList:
-            if self.xPos < e.rightCoord:
-                return True
-        return False
 
     def handleInput(self, eventKey, world):
         if eventKey == pygame.K_d:
@@ -61,3 +57,18 @@ class Creature:
             self.CreatureJump(world)
         else:
             x = 0
+
+    @staticmethod
+    def __overlap(self, l1, r1, l2, r2):
+        if l1.xCoord > r2.xCoord or l2.xCoord > r1.xCoord:
+            return False
+        if l1.yCoord < r2.yCoord or l2.yCoord < r1.yCoord:
+            return False
+        return True
+
+    # returns true if desired x,y position intersects with an environment
+    def __checkMoveValidity(self, new_topleft, new_botright, world):
+        for e in world.environmentList:
+            e_top_left = e.top_left
+            e_bot_right = e.bot_right
+            return not Creature.__overlap(None, e_top_left, e_bot_right, new_topleft, new_botright)

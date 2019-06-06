@@ -16,6 +16,8 @@ class World:
     yGridSize = None
     screen = None
 
+    gravity = 10  # gravity in pixels per second
+
     creatureList = []
     environmentList = []
 
@@ -40,8 +42,7 @@ class World:
 
     def updateWorld(self):
         for c in self.creatureList:
-            if c.ccBot(self): # true if collision on bottom of player
-                c.yPos += 1 # effect of gravity in pixels per loop
-            pygame.draw.rect(self.screen, (128, 128, 0), pygame.Rect(c.xPos, c.yPos, c.size, c.size))
+            c.applyGravity(self)
+            pygame.draw.rect(self.screen, (128, 128, 0), pygame.Rect(c.top_left.xCoord, c.top_left.yCoord, c.x_size, c.y_size))
         for e in self.environmentList:
-            pygame.draw.rect(self.screen, self.GREEN, pygame.Rect(e.xPos, e.yPos, e.xSize, e.ySize))
+            pygame.draw.rect(self.screen, self.GREEN, pygame.Rect(e.top_left.xCoord, e.top_left.yCoord, e.x_size, e.y_size))
