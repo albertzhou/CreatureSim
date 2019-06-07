@@ -48,7 +48,7 @@ class World:
     def clear_old_projectiles(self, p):
         if p.x_pos > self.xPixels or p.y_pos > self.yPixels:
             self.projectileList.remove(p)
-        if p.x_pos < 0 or p.y_pos < 0:
+        elif p.x_pos < 0 or p.y_pos < 0:
             self.projectileList.remove(p)
 
     def updateWorld(self):
