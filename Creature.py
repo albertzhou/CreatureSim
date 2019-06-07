@@ -1,4 +1,4 @@
-import pygame, Point
+import pygame, Point, Projectile
 
 
 class Creature:
@@ -82,6 +82,10 @@ class Creature:
         else:
             x = 0
 
+    # takes in position of mouse click and determines appropriate action (button press etc)
+    def handleMouseClick(self, pos, world):
+        self.shootBullet(pos, world)
+
     @staticmethod
     def __overlap(self, l1, r1, l2, r2):
         if l1.xCoord > r2.xCoord or l2.xCoord > r1.xCoord:
@@ -99,3 +103,24 @@ class Creature:
             if Creature.__overlap(None, e_top_left, e_bot_right, new_topleft, new_botright):
                 validity = False
         return validity
+
+    # returns a point with the creature's center location (to calculate projectile angles)
+    def center(self):
+        x_center = self.top_left.xCoord + round((self.bot_right.xCoord - self.top_left.xCoord) / 2)
+        y_center = self.top_left.yCoord + round((self.bot_right.yCoord - self.top_left.yCoord) / 2)
+
+        return Point.Point(x_center, y_center)
+
+    # returns a bullet upon mouseclick and adds it to the world list
+    def shootBullet(self, pos, world):
+        mouse_pos = Point.Point(pos[0], pos[1])
+        player_pos = self.center()
+
+        # normalized vector between two points
+        direction = mouse_pos.normalized_vector(mouse_pos, player_pos)
+        speed = 10
+        size = 5
+
+        bullet = Projectile.Projectile(player_pos, direction, speed, size)
+        world.spawn_projectile(bullet)
+        return bullet

@@ -36,6 +36,9 @@ class main:
                 if event.type == pygame.locals.QUIT:
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.locals.MOUSEBUTTONUP:
+                    pos = pygame.mouse.get_pos()
+                    player.handleMouseClick(pos, gameWorld)
             keys = pygame.key.get_pressed()  # checking pressed keys
             player.handleInput(keys, gameWorld)
             gameWorld.screen.fill(BLACK)
