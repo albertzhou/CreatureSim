@@ -59,5 +59,5 @@ class World:
             pygame.draw.rect(self.screen, self.GREEN, pygame.Rect(e.top_left.xCoord, e.top_left.yCoord, e.x_size, e.y_size))
         for p in self.projectileList: #update projectile positions
             p.update_position()
-
+            self.clear_old_projectiles(p)
             pygame.draw.circle(self.screen, self.RED, [int(p.x_pos), int(p.y_pos)], p.size)
