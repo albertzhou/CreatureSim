@@ -25,14 +25,16 @@ class main:
         floor = Wall.Wall(Point.Point(0, gameWorld.yPixels - 30), Point.Point(gameWorld.xPixels, gameWorld.yPixels))
         leftWall = Wall.Wall(Origin, Point.Point(30, gameWorld.yPixels))
         rightWall = Wall.Wall(Point.Point(gameWorld.xPixels - 30, 0), Point.Point(gameWorld.yPixels, gameWorld.yPixels))
+        ceiling = Wall.Wall(Origin, Point.Point(gameWorld.xPixels, 30))
         gameWorld.spawnWall(floor)
         gameWorld.spawnWall(leftWall)
         gameWorld.spawnWall(rightWall)
+        gameWorld.spawnWall(ceiling)
         gameWorld.updateWorld()
         ## end world initialization
 
         ## spawn enemy
-        en1 = Enemy.Enemy(Point.Point(300, 300), (Point.Point(325, 325)), 5)
+        en1 = Enemy.Enemy(Point.Point(300, 300), (Point.Point(325, 325)), 5, 100)
         gameWorld.spawn_enemy(en1)
 
 
@@ -49,4 +51,3 @@ class main:
             gameWorld.screen.fill(BLACK)
             gameWorld.updateWorld()  # update all locations
             gameWorld.renderworld()  # redraw the world on screen
-

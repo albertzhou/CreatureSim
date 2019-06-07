@@ -61,11 +61,15 @@ class World:
             c.applyGravity(self)
             pygame.draw.rect(self.screen, (128, 128, 0), pygame.Rect(c.top_left.xCoord, c.top_left.yCoord, c.x_size, c.y_size))
         for en in self.enemy_list:
-            en.random_movement(self)
-            pygame.draw.rect(self.screen, self.ENEMY_RED, pygame.Rect(en.top_left.xCoord, en.top_left.yCoord, en.x_size, en.y_size))
+            if en.health < 0:
+                self.enemy_list.remove(en)
+            else:
+                en.random_movement(self)
+                pygame.draw.rect(self.screen, self.ENEMY_RED, pygame.Rect(en.top_left.xCoord, en.top_left.yCoord, en.x_size, en.y_size))
         for e in self.environmentList: #update environment positions
             pygame.draw.rect(self.screen, self.GREEN, pygame.Rect(e.top_left.xCoord, e.top_left.yCoord, e.x_size, e.y_size))
         for p in self.projectileList: #update projectile positions
             p.update_position()
+            p.apply_damage(self)
             self.clear_old_projectiles(p)
             pygame.draw.circle(self.screen, self.RED, [int(p.x_pos), int(p.y_pos)], p.size)

@@ -120,7 +120,8 @@ class Creature():
         direction = mouse_pos.normalized_vector(mouse_pos, player_pos)
         speed = 10
         size = 5
+        damage = 10
 
-        bullet = Projectile.Projectile(player_pos, direction, speed, size)
+        bullet = Projectile.Projectile(player_pos, direction, speed, size, damage)
         world.spawn_projectile(bullet)
         return bullet
