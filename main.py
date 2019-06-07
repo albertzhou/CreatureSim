@@ -1,4 +1,4 @@
-import pygame, sys, Wall, Point
+import pygame, sys, Wall, Point, Enemy
 import World, Creature
 import pygame.locals
 
@@ -19,7 +19,7 @@ class main:
 
         ## Spawn player, floors, and wall
         gameWorld = World.World(500, 500)
-        gameWorld.initializeworld()
+        gameWorld.initialize_world()
         player = Creature.Creature(Point.Point(250, 400), Point.Point(275, 425), 5)  # xloc, yloc, size
         gameWorld.spawnCreature(player)
         floor = Wall.Wall(Point.Point(0, gameWorld.yPixels - 30), Point.Point(gameWorld.xPixels, gameWorld.yPixels))
@@ -30,6 +30,11 @@ class main:
         gameWorld.spawnWall(rightWall)
         gameWorld.updateWorld()
         ## end world initialization
+
+        ## spawn enemy
+        en1 = Enemy.Enemy(Point.Point(300, 300), (Point.Point(325, 325)), 5)
+        gameWorld.spawn_enemy(en1)
+
 
         while True: # main game loop
             for event in pygame.event.get():
