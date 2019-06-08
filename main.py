@@ -33,10 +33,6 @@ class main:
         gameWorld.updateWorld()
         ## end world initialization
 
-        ## spawn enemy
-        en1 = Enemy.Enemy(Point.Point(300, 300), (Point.Point(325, 325)), 5, 100)
-        gameWorld.spawn_enemy(en1)
-
 
         while True: # main game loop
             for event in pygame.event.get():

@@ -42,6 +42,13 @@ class Projectile:
                 world.projectileList.remove(self) # remove bullet once it hits an enemy
                 en.health -= self.damage
 
+    #bullets disappear when they come in contact with an environment
+    def absorb_projectile(self, world):
+        environments = world.environmentList
+        for e in environments:
+            if self.__overlap(None, self.top_left, self.bot_right, e.top_left, e.bot_right):
+                world.projectileList.remove(self)
+
     @staticmethod
     def __overlap(self, l1, r1, l2, r2):
         if l1.xCoord > r2.xCoord or l2.xCoord > r1.xCoord:

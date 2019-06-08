@@ -30,6 +30,9 @@ class Enemy:
         elif command == 4:
             self.CreatureFall(world)
 
+    def move_towards_player(self):
+        x = 0
+
         #shared with creature class:
     def moveCreatureRight(self, world):
         new_topleft = Point.Point(self.top_left.xCoord + self.speed, self.top_left.yCoord)
@@ -54,8 +57,8 @@ class Enemy:
             self.bot_right = new_botright
 
     def CreatureJump(self, world):
-        new_topleft = Point.Point(self.top_left.xCoord, self.top_left.yCoord - self.speed / 0.5)
-        new_botright = Point.Point(self.bot_right.xCoord, self.bot_right.yCoord - self.speed / 0.5)
+        new_topleft = Point.Point(self.top_left.xCoord, self.top_left.yCoord - self.speed)
+        new_botright = Point.Point(self.bot_right.xCoord, self.bot_right.yCoord - self.speed)
 
         if self.__checkMoveValidity(new_topleft, new_botright, world):
             self.top_left = new_topleft

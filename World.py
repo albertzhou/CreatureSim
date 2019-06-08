@@ -1,4 +1,4 @@
-import pygame
+import pygame, random, Enemy, Point
 
 
 class World:
@@ -71,5 +71,16 @@ class World:
         for p in self.projectileList: #update projectile positions
             p.update_position()
             p.apply_damage(self)
+            p.absorb_projectile(self)
             self.clear_old_projectiles(p)
             pygame.draw.circle(self.screen, self.RED, [int(p.x_pos), int(p.y_pos)], p.size)
+
+        # spawn more creatures randomly if there are fewer than a certain number of creatures
+        if len(self.enemy_list) < 3:
+            x_pos = random.randint(30, self.xPixels - 30)
+            y_pos = random.randint(30, self.yPixels - 30)
+            size = random.randint(25, 45)
+            speed = random.randint(3, 10)
+            health = random.randint(30, 80)
+            en = Enemy.Enemy(Point.Point(x_pos, y_pos), (Point.Point(x_pos + size, y_pos + size)), speed, health)
+            self.spawn_enemy(en)

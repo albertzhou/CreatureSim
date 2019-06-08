@@ -3,6 +3,7 @@ import pygame, Point, Projectile
 
 class Creature():
     gravity = 3
+    health = 100
 
     speed = None #pixels per second
     top_left = None
