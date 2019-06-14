@@ -2,7 +2,8 @@ import Point, random
 
 class Enemy:
     gravity = 3
-
+    green = 120
+    color = None
     speed = None #pixels per second
     top_left = None
     bot_right = None
@@ -18,6 +19,7 @@ class Enemy:
 
         self.x_size = bot_right.xCoord - top_left.xCoord
         self.y_size = bot_right.yCoord - top_left.yCoord
+        self.color = (255, self.green, 0)
 
     def random_movement(self, world):
         command = random.randint(1, 4)
@@ -30,8 +32,8 @@ class Enemy:
         elif command == 4:
             self.CreatureFall(world)
 
-    def move_towards_player(self):
-        x = 0
+    def move_towards_player(self, world):
+        player = world.creatureList[0]
 
         #shared with creature class:
     def moveCreatureRight(self, world):

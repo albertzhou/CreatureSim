@@ -1,4 +1,4 @@
-import pygame, random, Enemy, Point
+import pygame, random, Enemy, Point, Wall
 
 
 class World:
@@ -65,7 +65,7 @@ class World:
                 self.enemy_list.remove(en)
             else:
                 en.random_movement(self)
-                pygame.draw.rect(self.screen, self.ENEMY_RED, pygame.Rect(en.top_left.xCoord, en.top_left.yCoord, en.x_size, en.y_size))
+                pygame.draw.rect(self.screen, en.color, pygame.Rect(en.top_left.xCoord, en.top_left.yCoord, en.x_size, en.y_size))
         for e in self.environmentList: #update environment positions
             pygame.draw.rect(self.screen, self.GREEN, pygame.Rect(e.top_left.xCoord, e.top_left.yCoord, e.x_size, e.y_size))
         for p in self.projectileList: #update projectile positions
@@ -77,10 +77,18 @@ class World:
 
         # spawn more creatures randomly if there are fewer than a certain number of creatures
         if len(self.enemy_list) < 3:
-            x_pos = random.randint(30, self.xPixels - 30)
-            y_pos = random.randint(30, self.yPixels - 30)
+            x_pos = random.randint(30, self.xPixels - 80)
+            y_pos = random.randint(30, self.yPixels - 80)
             size = random.randint(25, 45)
             speed = random.randint(3, 10)
             health = random.randint(30, 80)
             en = Enemy.Enemy(Point.Point(x_pos, y_pos), (Point.Point(x_pos + size, y_pos + size)), speed, health)
             self.spawn_enemy(en)
+
+            x_pos_tl = random.randint(100, 400) # top left coords
+            y_pos_tl = random.randint(100, 400)
+
+            x_pos_br = random.randint(x_pos_tl, 470)
+            y_pos_br = random.randint(y_pos_tl, 470)
+
+            # e = Wall.Wall()

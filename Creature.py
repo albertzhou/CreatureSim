@@ -11,7 +11,7 @@ class Creature():
     x_size = None
     y_size = None
     consecutive_jumps = 0
-
+    
     def __init__(self, top_left, bot_right, speed):
         self.top_left = top_left
         self.bot_right = bot_right
