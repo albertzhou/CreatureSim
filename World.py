@@ -59,18 +59,24 @@ class World:
         elif p.x_pos < 0 or p.y_pos < 0:
             self.projectileList.remove(p)
 
-    def updateWorld(self):
+    def update_creature(self):
         for c in self.creatureList: #update creature positions
             c.applyGravity(self)
             pygame.draw.rect(self.screen, (128, 128, 0), pygame.Rect(c.top_left.xCoord, c.top_left.yCoord, c.x_size, c.y_size))
+
+    def update_enemies(self):
         for en in self.enemy_list:
             if en.health < 0:
                 self.enemy_list.remove(en)
             else:
                 en.random_movement(self)
                 pygame.draw.rect(self.screen, en.color, pygame.Rect(en.top_left.xCoord, en.top_left.yCoord, en.x_size, en.y_size))
+
+    def update_environment(self):
         for e in self.environmentList: #update environment positions
             pygame.draw.rect(self.screen, self.GREEN, pygame.Rect(e.top_left.xCoord, e.top_left.yCoord, e.x_size, e.y_size))
+
+    def update_projectiles(self):
         for p in self.projectileList: #update projectile positions
             p.update_position()
             p.apply_damage(self)
@@ -78,6 +84,7 @@ class World:
             self.clear_old_projectiles(p)
             pygame.draw.circle(self.screen, self.RED, [int(p.x_pos), int(p.y_pos)], p.size)
 
+    def update_spawns(self):
         if len(self.environmentList) < (4 + self.num_obstacles):
             while len(self.environmentList) < (4 + self.num_obstacles): # spawn random obstacles
                 x_pos_tl = random.randint(100, 400) # top left coords
@@ -107,6 +114,13 @@ class World:
                 if self.__world_overlap(self, en):
                     self.spawn_enemy(en)
 
+    def updateWorld(self):
+        self.update_creature()
+        self.update_enemies()
+        self.update_environment()
+        self.update_projectiles()
+        self.update_spawns()
+        
     @staticmethod
     def __overlap(self, l1, r1, l2, r2):
         if l1.xCoord > r2.xCoord or l2.xCoord > r1.xCoord:
