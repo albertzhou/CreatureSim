@@ -1,4 +1,4 @@
-import Point
+import Point, math
 
 
 class Projectile:
@@ -39,9 +39,10 @@ class Projectile:
         for en in enemies:
             if self.__overlap(None, self.top_left, self.bot_right, en.top_left, en.bot_right):
                 collisions.append([self, en])
-                world.projectileList.remove(self) # remove bullet once it hits an enemy
+                if self in world.projectileList:
+                    world.projectileList.remove(self) # remove bullet once it hits an enemy
                 en.health -= self.damage
-                en.green += 20
+                en.green = min(en.green + 20, 255)
                 en.color = [255, en.green, 0]
 
     #bullets disappear when they come in contact with an environment
@@ -49,7 +50,8 @@ class Projectile:
         environments = world.environmentList
         for e in environments:
             if self.__overlap(None, self.top_left, self.bot_right, e.top_left, e.bot_right):
-                world.projectileList.remove(self)
+                if self in world.projectileList:
+                    world.projectileList.remove(self)
             
     @staticmethod
     def __overlap(self, l1, r1, l2, r2):

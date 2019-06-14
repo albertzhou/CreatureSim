@@ -10,6 +10,9 @@ class World:
     RED =   (255,   0,   0)
     ENEMY_RED = (255, 120, 0)
 
+    num_enemies = 3
+    num_obstacles = 3
+
     xPixels = 500 # size of world in pixels
     yPixels = 500
 
@@ -76,19 +79,24 @@ class World:
             pygame.draw.circle(self.screen, self.RED, [int(p.x_pos), int(p.y_pos)], p.size)
 
         # spawn more creatures randomly if there are fewer than a certain number of creatures
-        if len(self.enemy_list) < 3:
-            x_pos = random.randint(30, self.xPixels - 80)
-            y_pos = random.randint(30, self.yPixels - 80)
-            size = random.randint(25, 45)
-            speed = random.randint(3, 10)
-            health = random.randint(30, 80)
-            en = Enemy.Enemy(Point.Point(x_pos, y_pos), (Point.Point(x_pos + size, y_pos + size)), speed, health)
-            self.spawn_enemy(en)
+        if len(self.enemy_list) == 0:
+            for i in range(self.num_enemies):
+                x_pos = random.randint(30, self.xPixels - 80)
+                y_pos = random.randint(30, self.yPixels - 80)
+                size = random.randint(25, 45)
+                speed = random.randint(3, 10)
+                health = random.randint(30, 80)
+                en = Enemy.Enemy(Point.Point(x_pos, y_pos), (Point.Point(x_pos + size, y_pos + size)), speed, health)
+                self.spawn_enemy(en)
 
-            x_pos_tl = random.randint(100, 400) # top left coords
-            y_pos_tl = random.randint(100, 400)
+            for i in range(self.num_obstacles):
+                x_pos_tl = random.randint(100, 400) # top left coords
+                y_pos_tl = random.randint(100, 400)
+                tl = Point.Point(x_pos_tl, y_pos_tl)
 
-            x_pos_br = random.randint(x_pos_tl, 470)
-            y_pos_br = random.randint(y_pos_tl, 470)
+                x_pos_br = random.randint(x_pos_tl, 470)
+                y_pos_br = random.randint(y_pos_tl, 470)
+                br = Point.Point(x_pos_br, y_pos_br)
 
-            # e = Wall.Wall()
+                obs = Wall.Wall(tl, br)
+                self.spawnWall(obs)
