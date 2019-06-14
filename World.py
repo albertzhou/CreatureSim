@@ -78,25 +78,52 @@ class World:
             self.clear_old_projectiles(p)
             pygame.draw.circle(self.screen, self.RED, [int(p.x_pos), int(p.y_pos)], p.size)
 
+        if len(self.environmentList) < (4 + self.num_obstacles):
+            while len(self.environmentList) < (4 + self.num_obstacles): # spawn random obstacles
+                x_pos_tl = random.randint(100, 400) # top left coords
+                y_pos_tl = random.randint(100, 400)
+                tl = Point.Point(x_pos_tl, y_pos_tl)
+
+                x_len = random.randint(100, 200)
+                y_len = random.randint(100, 200)
+
+                x_pos_br = random.randint(x_pos_tl, x_pos_tl + x_len)
+                y_pos_br = random.randint(y_pos_tl, y_pos_tl + y_len)
+                br = Point.Point(x_pos_br, y_pos_br)
+
+                obs = Wall.Wall(tl, br)
+                if self.__world_overlap(self, obs):
+                    self.spawnWall(obs)
+
         # spawn more creatures randomly if there are fewer than a certain number of creatures
         if len(self.enemy_list) == 0:
-            for i in range(self.num_enemies):
+            while len(self.enemy_list) < self.num_enemies: # spawn random enemies
                 x_pos = random.randint(30, self.xPixels - 80)
                 y_pos = random.randint(30, self.yPixels - 80)
                 size = random.randint(25, 45)
                 speed = random.randint(3, 10)
                 health = random.randint(30, 80)
                 en = Enemy.Enemy(Point.Point(x_pos, y_pos), (Point.Point(x_pos + size, y_pos + size)), speed, health)
-                self.spawn_enemy(en)
+                if self.__world_overlap(self, en):
+                    self.spawn_enemy(en)
 
-            for i in range(self.num_obstacles):
-                x_pos_tl = random.randint(100, 400) # top left coords
-                y_pos_tl = random.randint(100, 400)
-                tl = Point.Point(x_pos_tl, y_pos_tl)
+    @staticmethod
+    def __overlap(self, l1, r1, l2, r2):
+        if l1.xCoord > r2.xCoord or l2.xCoord > r1.xCoord:
+            return False
+        if l1.yCoord > r2.yCoord or l2.yCoord > r1.yCoord: # swapped because y is inverted
+            return False
+        return True
 
-                x_pos_br = random.randint(x_pos_tl, 470)
-                y_pos_br = random.randint(y_pos_tl, 470)
-                br = Point.Point(x_pos_br, y_pos_br)
-
-                obs = Wall.Wall(tl, br)
-                self.spawnWall(obs)
+    @staticmethod
+    def __world_overlap(self, object):
+        for e in self.environmentList:
+            if self.__overlap(None, e.top_left, e.bot_right, object.top_left, object.bot_right):
+                return False
+        for en in self.enemy_list:
+            if self.__overlap(None, en.top_left, en.bot_right, object.top_left, object.bot_right):
+                return False
+        for c in self.creatureList:
+            if self.__overlap(None, c.top_left, c.bot_right, object.top_left, object.bot_right):
+                return False
+        return True
