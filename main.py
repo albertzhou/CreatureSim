@@ -30,7 +30,7 @@ class main:
         gameWorld.spawnWall(leftWall)
         gameWorld.spawnWall(rightWall)
         gameWorld.spawnWall(ceiling)
-        gameWorld.updateWorld()
+        gameWorld.update_world()
         ## end world initialization
 
 
@@ -45,5 +45,5 @@ class main:
             keys = pygame.key.get_pressed()  # checking pressed keys
             player.handleInput(keys, gameWorld)
             gameWorld.screen.fill(BLACK)
-            gameWorld.updateWorld()  # update all locations
+            gameWorld.update_world()  # update all locations
             gameWorld.renderworld()  # redraw the world on screen

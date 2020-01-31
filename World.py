@@ -10,7 +10,7 @@ class World:
     RED =   (255,   0,   0)
     ENEMY_RED = (255, 120, 0)
 
-    num_enemies = 3
+    num_enemies = 1
     num_obstacles = 3
 
     xPixels = 500 # size of world in pixels
@@ -69,7 +69,8 @@ class World:
             if en.health < 0:
                 self.enemy_list.remove(en)
             else:
-                en.random_movement(self)
+                # en.random_movement(self)
+                en.move_towards_player(self)
                 pygame.draw.rect(self.screen, en.color, pygame.Rect(en.top_left.xCoord, en.top_left.yCoord, en.x_size, en.y_size))
 
     def update_environment(self):
@@ -108,19 +109,19 @@ class World:
                 x_pos = random.randint(30, self.xPixels - 80)
                 y_pos = random.randint(30, self.yPixels - 80)
                 size = random.randint(25, 45)
-                speed = random.randint(3, 10)
+                speed = random.randint(3, 5)
                 health = random.randint(30, 80)
                 en = Enemy.Enemy(Point.Point(x_pos, y_pos), (Point.Point(x_pos + size, y_pos + size)), speed, health)
                 if self.__world_overlap(self, en):
                     self.spawn_enemy(en)
 
-    def updateWorld(self):
+    def update_world(self):
         self.update_creature()
         self.update_enemies()
         self.update_environment()
         self.update_projectiles()
         self.update_spawns()
-        
+
     @staticmethod
     def __overlap(self, l1, r1, l2, r2):
         if l1.xCoord > r2.xCoord or l2.xCoord > r1.xCoord:
